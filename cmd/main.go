@@ -3,6 +3,7 @@ package main
 import (
 	"motionserver/app/middleware"
 	"motionserver/app/module/auth"
+	"motionserver/app/module/category"
 	"motionserver/app/router"
 	"motionserver/internal/bootstrap"
 	"motionserver/internal/bootstrap/database"
@@ -46,6 +47,7 @@ func main() {
 		// provide modules
 
 		auth.NewAuthModule,
+		category.NewCategoryModule,
 
 		// start aplication
 		fx.Invoke(bootstrap.Start),
