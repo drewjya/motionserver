@@ -3,6 +3,7 @@ package router
 import (
 	"motionserver/app/module/auth"
 	"motionserver/app/module/category"
+	"motionserver/app/module/product"
 	"motionserver/utils/config"
 
 	"github.com/gofiber/fiber/v2"
@@ -10,10 +11,11 @@ import (
 )
 
 type Router struct {
-	App fiber.Router
-	Cfg *config.Config
+	App            fiber.Router
+	Cfg            *config.Config
 	AuthRouter     *auth.AuthRouter
 	CategoryRouter *category.CategoryRouter
+	ProductRouter  *product.ProductRouter
 }
 
 func NewRouter(
@@ -21,12 +23,14 @@ func NewRouter(
 	cfg *config.Config,
 	authRouter *auth.AuthRouter,
 	categoryRouter *category.CategoryRouter,
+	ProductRouter *product.ProductRouter,
 ) *Router {
 	return &Router{
 		App:            fiber,
 		Cfg:            cfg,
 		AuthRouter:     authRouter,
 		CategoryRouter: categoryRouter,
+		ProductRouter:  ProductRouter,
 	}
 }
 
@@ -44,5 +48,7 @@ func (r *Router) Register() {
 	r.AuthRouter.RegisterAuthRoutes()
 
 	r.CategoryRouter.RegisterCategoryRoutes()
+
+	r.ProductRouter.RegisterCategoryRoutes()
 
 }
