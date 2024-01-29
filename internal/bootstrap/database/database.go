@@ -1,10 +1,10 @@
 package database
 
 import (
-	"template_clean_architecture/app/database/schema"
-	"template_clean_architecture/app/database/seeds"
-	"template_clean_architecture/internal/bootstrap/seeder"
-	"template_clean_architecture/utils/config"
+	"motionserver/app/database/schema"
+	"motionserver/app/database/seeds"
+	"motionserver/internal/bootstrap/seeder"
+	"motionserver/utils/config"
 
 	"github.com/rs/zerolog"
 	"gorm.io/driver/postgres"

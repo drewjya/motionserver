@@ -1,8 +1,8 @@
 package router
 
 import (
-	"template_clean_architecture/app/module/auth"
-	"template_clean_architecture/utils/config"
+	"motionserver/app/module/auth"
+	"motionserver/utils/config"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"

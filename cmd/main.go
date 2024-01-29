@@ -1,12 +1,12 @@
 package main
 
 import (
-	"template_clean_architecture/app/middleware"
-	"template_clean_architecture/app/module/auth"
-	"template_clean_architecture/app/router"
-	"template_clean_architecture/internal/bootstrap"
-	"template_clean_architecture/internal/bootstrap/database"
-	"template_clean_architecture/utils/config"
+	"motionserver/app/middleware"
+	"motionserver/app/module/auth"
+	"motionserver/app/router"
+	"motionserver/internal/bootstrap"
+	"motionserver/internal/bootstrap/database"
+	"motionserver/utils/config"
 
 	fxzerolog "github.com/efectn/fx-zerolog"
 	"go.uber.org/fx"

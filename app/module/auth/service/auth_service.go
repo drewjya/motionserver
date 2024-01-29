@@ -2,12 +2,12 @@ package service
 
 import (
 	"errors"
-	"template_clean_architecture/app/database/schema"
-	"template_clean_architecture/app/middleware"
-	"template_clean_architecture/app/module/auth/repository"
-	"template_clean_architecture/app/module/auth/request"
-	"template_clean_architecture/app/module/auth/response"
-	"template_clean_architecture/utils/helpers"
+	"motionserver/app/database/schema"
+	"motionserver/app/middleware"
+	"motionserver/app/module/auth/repository"
+	"motionserver/app/module/auth/request"
+	"motionserver/app/module/auth/response"
+	"motionserver/utils/helpers"
 	"time"
 )
 

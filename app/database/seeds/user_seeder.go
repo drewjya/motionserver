@@ -1,10 +1,10 @@
 package seeds
 
 import (
-	"template_clean_architecture/app/database/schema"
-	"template_clean_architecture/internal/bootstrap/seeder"
+	"motionserver/app/database/schema"
+	"motionserver/internal/bootstrap/seeder"
 
-	"template_clean_architecture/utils/helpers"
+	"motionserver/utils/helpers"
 	"time"
 
 	"gorm.io/gorm"

@@ -3,11 +3,11 @@ package bootstrap
 import (
 	"context"
 	"flag"
-	"template_clean_architecture/app/middleware"
-	"template_clean_architecture/app/router"
-	"template_clean_architecture/internal/bootstrap/database"
-	"template_clean_architecture/utils/config"
-	"template_clean_architecture/utils/response"
+	"motionserver/app/middleware"
+	"motionserver/app/router"
+	"motionserver/internal/bootstrap/database"
+	"motionserver/utils/config"
+	"motionserver/utils/response"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"

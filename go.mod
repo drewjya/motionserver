@@ -1,4 +1,4 @@
-module template_clean_architecture
+module motionserver
 
 go 1.20
 

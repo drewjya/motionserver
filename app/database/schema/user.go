@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"template_clean_architecture/utils/helpers"
+	"motionserver/utils/helpers"
 	"time"
 
 	"gorm.io/gorm"

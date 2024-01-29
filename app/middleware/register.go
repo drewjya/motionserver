@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"template_clean_architecture/utils/config"
+	"motionserver/utils/config"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"

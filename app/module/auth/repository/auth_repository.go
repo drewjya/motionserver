@@ -2,8 +2,8 @@ package repository
 
 import (
 	"log"
-	"template_clean_architecture/app/database/schema"
-	"template_clean_architecture/internal/bootstrap/database"
+	"motionserver/app/database/schema"
+	"motionserver/internal/bootstrap/database"
 	"time"
 )
 

@@ -1,7 +1,7 @@
 package response
 
 import (
-	"template_clean_architecture/app/middleware"
+	"motionserver/app/middleware"
 )
 
 type LoginResponse struct {

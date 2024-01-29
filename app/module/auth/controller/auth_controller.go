@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"template_clean_architecture/app/module/auth/request"
-	"template_clean_architecture/app/module/auth/service"
-	"template_clean_architecture/utils/response"
+	"motionserver/app/module/auth/request"
+	"motionserver/app/module/auth/service"
+	"motionserver/utils/response"
 
 	"github.com/gofiber/fiber/v2"
 )

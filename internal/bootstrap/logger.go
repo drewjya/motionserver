@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
+	"motionserver/utils/config"
 	"os"
-	"template_clean_architecture/utils/config"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"

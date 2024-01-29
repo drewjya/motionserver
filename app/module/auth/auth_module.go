@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"template_clean_architecture/app/module/auth/controller"
-	"template_clean_architecture/app/module/auth/repository"
-	"template_clean_architecture/app/module/auth/service"
+	"motionserver/app/module/auth/controller"
+	"motionserver/app/module/auth/repository"
+	"motionserver/app/module/auth/service"
 
 	"github.com/gofiber/fiber/v2"
 	"go.uber.org/fx"

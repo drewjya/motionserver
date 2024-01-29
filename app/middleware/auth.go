@@ -3,9 +3,9 @@ package middleware
 import (
 	"fmt"
 	"log"
+	"motionserver/utils/config"
+	"motionserver/utils/response"
 	"strconv"
-	"template_clean_architecture/utils/config"
-	"template_clean_architecture/utils/response"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -32,7 +32,7 @@ func Protected(refresh bool) fiber.Handler {
 				}
 				return []byte(conf.Middleware.Jwt.Secret), nil
 			})
-			
+
 			if err != nil {
 				return c.Status(fiber.StatusUnauthorized).
 					JSON(response.Response{
