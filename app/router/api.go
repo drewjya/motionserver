@@ -3,6 +3,7 @@ package router
 import (
 	"motionserver/app/module/auth"
 	"motionserver/app/module/category"
+	"motionserver/app/module/gallery"
 	"motionserver/app/module/product"
 	"motionserver/utils/config"
 
@@ -16,6 +17,7 @@ type Router struct {
 	AuthRouter     *auth.AuthRouter
 	CategoryRouter *category.CategoryRouter
 	ProductRouter  *product.ProductRouter
+	GalleryRouter  *gallery.GalleryRouter
 }
 
 func NewRouter(
@@ -24,6 +26,7 @@ func NewRouter(
 	authRouter *auth.AuthRouter,
 	categoryRouter *category.CategoryRouter,
 	ProductRouter *product.ProductRouter,
+	GalleryRouter *gallery.GalleryRouter,
 ) *Router {
 	return &Router{
 		App:            fiber,
@@ -31,6 +34,7 @@ func NewRouter(
 		AuthRouter:     authRouter,
 		CategoryRouter: categoryRouter,
 		ProductRouter:  ProductRouter,
+		GalleryRouter:  GalleryRouter,
 	}
 }
 
@@ -49,6 +53,8 @@ func (r *Router) Register() {
 
 	r.CategoryRouter.RegisterCategoryRoutes()
 
-	r.ProductRouter.RegisterCategoryRoutes()
+	r.ProductRouter.RegisterProductRoutes()
+
+	r.GalleryRouter.RegisterGalleryRoutes()
 
 }

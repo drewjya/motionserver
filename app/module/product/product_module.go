@@ -30,10 +30,10 @@ func NewProductRouter(fiber *fiber.App, controller *controller.Controller) *Prod
 
 }
 
-func (_i *ProductRouter) RegisterCategoryRoutes() {
+func (_i *ProductRouter) RegisterProductRoutes() {
 	productController := _i.Controller.Product
 	_i.App.Route("/product", func(router fiber.Router) {
-		router.Get("/", productController.Index)
-		router.Post("/", middleware.Protected(false), productController.Store)
+		router.Get("", productController.Index)
+		router.Post("", middleware.Protected(false), productController.Store)
 	})
 }

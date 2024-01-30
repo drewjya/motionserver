@@ -8,6 +8,7 @@ import (
 	"motionserver/internal/bootstrap/database"
 	"motionserver/utils/config"
 	"motionserver/utils/response"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
@@ -18,8 +19,10 @@ func NewFiber(cfg *config.Config) *fiber.App {
 	app := fiber.New(
 		fiber.Config{
 			AppName:           cfg.App.Name,
-			EnablePrintRoutes: cfg.App.PrintRoutes,
+			EnablePrintRoutes: true,
 			ErrorHandler:      response.ErrorHandler,
+			IdleTimeout:       cfg.App.IdleTimeout * time.Second,
+			Prefork:           cfg.App.Prefork,
 		},
 	)
 	response.IsProduction = cfg.App.Production
@@ -57,8 +60,6 @@ func Start(lifecycle fx.Lifecycle, cfg *config.Config, fiber *fiber.App, router 
 					log.Debug().Msgf("Handlers: %d", fiber.HandlersCount())
 
 				}
-
-				// Listen the app (with TLS Support)
 
 				go func() {
 					if err := fiber.Listen(cfg.App.Port); err != nil {

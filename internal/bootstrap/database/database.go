@@ -1,7 +1,6 @@
 package database
 
 import (
-	"log"
 	"motionserver/app/database/schema"
 	"motionserver/app/database/seeds"
 	"motionserver/internal/bootstrap/seeder"
@@ -72,6 +71,7 @@ func Models() []interface{} {
 		schema.Account{},
 		schema.Category{},
 		schema.Product{},
+		schema.Gallery{},
 	}
 }
 
@@ -83,14 +83,12 @@ func (_db *Database) SeedModels() {
 		user,
 		category,
 	}
-	log.Println(seeder)
 	for _, seed := range seeder {
 
 		count, err := seed.Count(_db.DB)
 		if err != nil {
 			_db.Log.Error().Err(err).Msg("An unknown error occurred when to seed the database!")
 		}
-		log.Println(count, "count")
 
 		if count == 0 {
 			if err := seed.Seed(_db.DB); err != nil {

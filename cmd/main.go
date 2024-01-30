@@ -4,6 +4,7 @@ import (
 	"motionserver/app/middleware"
 	"motionserver/app/module/auth"
 	"motionserver/app/module/category"
+	"motionserver/app/module/gallery"
 	"motionserver/app/module/product"
 	"motionserver/app/router"
 	"motionserver/internal/bootstrap"
@@ -50,6 +51,7 @@ func main() {
 		auth.NewAuthModule,
 		category.NewCategoryModule,
 		product.NewProductModule,
+		gallery.NewGalleryModule,
 
 		// start aplication
 		fx.Invoke(bootstrap.Start),

@@ -33,7 +33,7 @@ func NewCategoryRouter(fiber *fiber.App, controller *controller.Controller) *Cat
 func (_i *CategoryRouter) RegisterCategoryRoutes() {
 	categoryController := _i.Controller.Cateogry
 	_i.App.Route("/category", func(router fiber.Router) {
-		router.Get("/", categoryController.Index)
-		router.Post("/", middleware.Protected(false), categoryController.Store)
+		router.Get("", categoryController.Index)
+		router.Post("", middleware.Protected(false), categoryController.Store)
 	})
 }

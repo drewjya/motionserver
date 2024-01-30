@@ -34,14 +34,14 @@ func (_i *productController) Index(c *fiber.Ctx) error {
 	var req request.ProductsRequest
 	req.Pagination = paginate
 
-	categories, paging, err := _i.productService.All(req)
+	products, paging, err := _i.productService.All(req)
 	if err != nil {
 		return err
 	}
 
 	return response.Resp(c, response.Response{
-		Messages: response.RootMessage("success retrieve categories"),
-		Data:     categories,
+		Messages: response.RootMessage("success retrieve products"),
+		Data:     products,
 		Meta:     paging,
 	})
 }
@@ -63,6 +63,6 @@ func (_i *productController) Store(c *fiber.Ctx) error {
 	}
 
 	return response.Resp(c, response.Response{
-		Messages: response.RootMessage("Category Successfully created"),
+		Messages: response.RootMessage("Product Successfully created"),
 	})
 }
