@@ -15,6 +15,7 @@ type productRepository struct {
 
 type ProductRepository interface {
 	GetProducts(req request.ProductsRequest) (products []*schema.Product, paging paginator.Pagination, err error)
+	FindOne(id uint64) (product *schema.Product, err error)
 	Create(product *schema.Product) (err error)
 	Update(id uint64, product *schema.Product) (err error)
 	Delete(id uint64) (err error)
@@ -41,6 +42,13 @@ func (_i *productRepository) GetProducts(req request.ProductsRequest) (products 
 	paging = *req.Pagination
 
 	return
+}
+
+func (_i *productRepository) FindOne(id uint64) (product *schema.Product, err error) {
+	if err := _i.DB.DB.Model(&schema.Product{}).Preload("Categories").First(&product, id).Error; err != nil {
+		return nil, err
+	}
+	return product, nil
 }
 
 func (_i *productRepository) Create(product *schema.Product) (err error) {
