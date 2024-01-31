@@ -1,29 +1,15 @@
-# Use the official Go image as the base image
-FROM golang:1.19-alpine AS builder
+FROM golang:alpine as builder
 
-# Set the working directory inside the container
 WORKDIR /app
-
-# Copy the Go modules files
-COPY go.mod go.sum ./
-
-# Download and install Go dependencies
+COPY go.* ./
 RUN go mod download
-
-# Copy the entire application directory into the container
 COPY . .
+RUN apk update && apk add upx ca-certificates openssl && update-ca-certificates
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o /bin/api-binary ./cmd/example/main.go
+RUN upx -9 /bin/api-binary
 
-# Build the Go Fiber application
-RUN CGO_ENABLED=0 GOOS=linux go build -o app ./cmd/main.go
-
-# Use a smaller base image for the final image
-FROM alpine:3.14
-
-# Copy the built application from the builder stage
-COPY --from=builder /app /app
-
-# Set the working directory for the application
-WORKDIR /app
-
-# Set the entry point for the container
-CMD ["./app"]
+FROM gcr.io/distroless/static:nonroot
+WORKDIR /app/
+COPY --from=builder /bin/api-binary /bin/api-binary
+COPY --from=builder --chown=nonroot /app/config /app/config
+ENTRYPOINT ["/bin/api-binary"]
