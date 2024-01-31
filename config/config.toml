@@ -1,7 +1,7 @@
 # Configuration vars for cmd/app
 [app]
 name = "Motion Server"
-port = ":4444"
+port = ":3200"
 idle-timeout = 5 # As seconds
 print-routes = true
 prefork = true
