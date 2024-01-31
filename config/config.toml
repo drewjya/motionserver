@@ -8,7 +8,7 @@ prefork = true
 production = false
 
 [db.postgres]
-dsn = "postgresql://postgres:root@127.0.0.1:5432/fiber_starter" # <driver>://<username>:<password>@<host>:<port>/<database>
+dsn = "postgresql://postgres:postgres@postgres:5432/postgres" #
 
 [minio]
 endpoint = "minio.motionsportindonesia.id"
