@@ -31,6 +31,14 @@ type db = struct {
 	}
 }
 
+type minio = struct {
+	Endpoint string `toml:"endpoint"`
+	Port     int    `toml:"port"`
+	Username string `toml:"username"`
+	Password string `toml:"password"`
+	Bucket   string `toml:"bucket"`
+}
+
 // log struct config
 type logger = struct {
 	TimeFormat string        `toml:"time-format"`
@@ -85,6 +93,7 @@ type Config struct {
 	DB         db
 	Logger     logger
 	Middleware middleware
+	Minio      minio
 }
 
 // func to parse config

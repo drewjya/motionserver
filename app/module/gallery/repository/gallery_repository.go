@@ -15,6 +15,7 @@ type galleryRepository struct {
 
 type GalleryRepository interface {
 	GetProducts(req request.GalleriesRequest) (galleries []*schema.Gallery, paging paginator.Pagination, err error)
+	FindOne(id uint64) (gallery *schema.Gallery, err error)
 	Create(gallery *schema.Gallery) (err error)
 	Update(id uint64, gallery *schema.Gallery) (err error)
 	Delete(id uint64) (err error)
@@ -26,6 +27,12 @@ func NewGalleryRepository(db *database.Database) GalleryRepository {
 	}
 }
 
+func (_i *galleryRepository) FindOne(id uint64) (gallery *schema.Gallery, err error) {
+	if err := _i.DB.DB.First(&gallery, id).Error; err != nil {
+		return nil, err
+	}
+	return gallery, nil
+}
 func (_i *galleryRepository) GetProducts(req request.GalleriesRequest) (galleries []*schema.Gallery, paging paginator.Pagination, err error) {
 	var count int64
 	query := _i.DB.DB.Model(&schema.Gallery{})

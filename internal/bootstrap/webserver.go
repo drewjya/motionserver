@@ -6,6 +6,7 @@ import (
 	"motionserver/app/middleware"
 	"motionserver/app/router"
 	"motionserver/internal/bootstrap/database"
+	"motionserver/internal/bootstrap/minio"
 	"motionserver/utils/config"
 	"motionserver/utils/response"
 	"time"
@@ -29,7 +30,7 @@ func NewFiber(cfg *config.Config) *fiber.App {
 	return app
 }
 
-func Start(lifecycle fx.Lifecycle, cfg *config.Config, fiber *fiber.App, router *router.Router, middlewares *middleware.Middleware, database *database.Database, log zerolog.Logger) {
+func Start(lifecycle fx.Lifecycle, cfg *config.Config, fiber *fiber.App, router *router.Router, middlewares *middleware.Middleware, database *database.Database, log zerolog.Logger, minio *minio.Minio) {
 	lifecycle.Append(
 		fx.Hook{
 			OnStart: func(ctx context.Context) error {
@@ -68,6 +69,7 @@ func Start(lifecycle fx.Lifecycle, cfg *config.Config, fiber *fiber.App, router 
 				}()
 
 				database.ConnectDatabase()
+				minio.ConnectMinio(ctx)
 
 				migrate := flag.Bool("migrate", false, "migrate the database")
 				seeder := flag.Bool("seed", false, "seed the database")

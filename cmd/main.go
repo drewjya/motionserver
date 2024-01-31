@@ -9,6 +9,7 @@ import (
 	"motionserver/app/router"
 	"motionserver/internal/bootstrap"
 	"motionserver/internal/bootstrap/database"
+	"motionserver/internal/bootstrap/minio"
 	"motionserver/utils/config"
 
 	fxzerolog "github.com/efectn/fx-zerolog"
@@ -41,6 +42,9 @@ func main() {
 		fx.Provide(bootstrap.NewFiber),
 		// database
 		fx.Provide(database.NewDatabase),
+		// minio
+		fx.Provide(minio.NewMinio),
+
 		// middleware
 		fx.Provide(middleware.NewMiddleware),
 		// router

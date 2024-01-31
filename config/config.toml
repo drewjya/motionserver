@@ -10,6 +10,13 @@ production = false
 [db.postgres]
 dsn = "postgresql://postgres:root@127.0.0.1:5432/fiber_starter" # <driver>://<username>:<password>@<host>:<port>/<database>
 
+[minio]
+endpoint = "minio.motionsportindonesia.id"
+port = 9000
+username = "AKIAIOSFODNN7EXAMPLE"
+password = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+bucket = "dev-minio"
+
 [logger]
 time-format = "" # https://pkg.go.dev/time#pkg-constants, https://github.com/rs/zerolog/blob/master/api.go#L10 
 level = 0 # panic -> 5, fatal -> 4, error -> 3, warn -> 2, info -> 1, debug -> 0, trace -> -1

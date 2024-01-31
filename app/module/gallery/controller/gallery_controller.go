@@ -1,12 +1,13 @@
 package controller
 
 import (
-	"log"
 	"motionserver/app/module/gallery/request"
 	"motionserver/app/module/gallery/service"
+	koderor "motionserver/utils/error"
 	"motionserver/utils/paginator"
 	"motionserver/utils/response"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -48,14 +49,30 @@ func (_i *galleryController) Index(c *fiber.Ctx) error {
 
 func (_i *galleryController) Store(c *fiber.Ctx) error {
 	req := new(request.GalleryRequest)
-	if err := response.ParseAndValidate(c, req); err != nil {
-		return err
+	file, errNew := c.FormFile("image")
+	var vale koderor.KodeError
+	var err error
+	if errNew != nil {
+		errVall := errNew.Error()
+		if errVall == "there is no uploaded file associated with the given key" {
+			errVall = "Image field is required"
+		}
+
+		vale = koderor.New("image", errVall)
 	}
-	file, err := c.FormFile("image")
-	if err.Error() != "" {
-		return err
+	err = response.ParseAndValidate(c, req)
+	if err != nil || vale != nil {
+		if err != nil && vale == nil {
+			val := err.(validator.ValidationErrors)
+			return koderor.NewErrors(&val, nil)
+		}
+		if err == nil && vale != nil {
+			return koderor.NewErrors(nil, vale.(*koderor.ErrorKode))
+		}
+		val := err.(validator.ValidationErrors)
+		return koderor.NewErrors(&val, vale.(*koderor.ErrorKode))
 	}
-	log.Println(file)
+	req.File = file
 
 	err = _i.galleryService.Store(*req)
 	if err != nil {

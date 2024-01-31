@@ -1,6 +1,7 @@
 package request
 
 import (
+	"mime/multipart"
 	"motionserver/app/database/schema"
 	"motionserver/utils/paginator"
 
@@ -19,6 +20,7 @@ type ProductRequest struct {
 	SerialCode  string `form:"serialCode" json:"serialCode" validate:"required"`
 	Image       string
 	Categories  []uint64 `form:"categories" json:"categories" validate:"required"`
+	File        *multipart.FileHeader
 }
 
 func (req *ProductRequest) ToDomain() *schema.Product {

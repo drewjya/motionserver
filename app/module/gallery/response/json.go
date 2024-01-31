@@ -15,7 +15,7 @@ type Gallery struct {
 	Image   string `json:"image"`
 }
 
-func FromDomain(domain *schema.Gallery) (gallery *Gallery) {
+func FromDomain(domain *schema.Gallery, image string) (gallery *Gallery) {
 	if domain == nil {
 		return nil
 	}
@@ -26,6 +26,6 @@ func FromDomain(domain *schema.Gallery) (gallery *Gallery) {
 		Title:   domain.Title,
 		Tanggal: format,
 		Detail:  domain.Detail,
-		Image:   domain.Image,
+		Image:   image,
 	}
 }

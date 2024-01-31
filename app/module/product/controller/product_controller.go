@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"log"
 	"motionserver/app/module/product/request"
 	"motionserver/app/module/product/service"
+	koderor "motionserver/utils/error"
 	"motionserver/utils/paginator"
 	"motionserver/utils/response"
 
@@ -52,10 +52,11 @@ func (_i *productController) Store(c *fiber.Ctx) error {
 		return err
 	}
 	file, err := c.FormFile("image")
-	if err != nil && err.Error() != "there is no uploaded file associated with the given key" {
-		return err
+	if err != nil {
+		vale := koderor.New("image", err.Error())
+		return vale
 	}
-	log.Println(file)
+	req.File = file
 
 	err = _i.productService.Store(*req)
 	if err != nil {

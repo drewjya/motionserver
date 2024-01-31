@@ -16,7 +16,7 @@ type Product struct {
 	Categories  []response.Categories `json:"categories"`
 }
 
-func FromDomain(domain *schema.Product) (product *Product) {
+func FromDomain(domain *schema.Product, image string) (product *Product) {
 	if domain == nil {
 		return nil
 	}
@@ -33,7 +33,7 @@ func FromDomain(domain *schema.Product) (product *Product) {
 		Description: domain.Description,
 		Price:       domain.Price,
 		Stock:       domain.Stock,
-		Image:       domain.Image,
+		Image:       image,
 		SerialCode:  domain.SerialCode,
 		Categories:  categories,
 	}

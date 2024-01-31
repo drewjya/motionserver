@@ -2,6 +2,7 @@ package response
 
 import (
 	"fmt"
+	koderor "motionserver/utils/error"
 	"reflect"
 	"strings"
 
@@ -49,7 +50,22 @@ var ErrorHandler = func(c *fiber.Ctx, err error) error {
 
 	// handle errors
 	fmt.Println(reflect.TypeOf(err))
-	if c, ok := err.(validator.ValidationErrors); ok {
+	if c, ok := err.(*koderor.ErrorsKode); ok {
+		resp.Code = fiber.StatusBadRequest
+		erv := map[string]string{}
+		if c.Val != nil {
+			erv = removeTopStruct(c.Val.Translate(trans))
+		}
+		if c.Kode != nil {
+			erv[c.Kode.Key] = c.Kode.Value
+		}
+		resp.Messages = erv
+	} else if c, ok := err.(*koderor.ErrorKode); ok {
+		resp.Code = fiber.StatusBadRequest
+		resp.Messages = fiber.Map{
+			c.Key: c.Value,
+		}
+	} else if c, ok := err.(validator.ValidationErrors); ok {
 		resp.Code = fiber.StatusUnprocessableEntity
 		resp.Messages = removeTopStruct(c.Translate(trans))
 	} else if c, ok := err.(*fiber.Error); ok {

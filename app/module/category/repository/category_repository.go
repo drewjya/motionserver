@@ -47,3 +47,4 @@ func (_i *categoryRepository) GetCategories(req request.CategoriesRequest) (cate
 func (_i *categoryRepository) Create(category *schema.Category) (err error) {
 	return _i.DB.DB.Create(&category).Error
 }
+
