@@ -1,6 +1,7 @@
 package request
 
 import (
+	"log"
 	"motionserver/app/database/schema"
 	"motionserver/utils/paginator"
 )
@@ -10,10 +11,12 @@ type CategoriesRequest struct {
 }
 
 type CategoryRequest struct {
-	Name string `json:"name" validate:"required,min=3,max=255"`
+	Name string `form:"name" json:"name" validate:"required,min=3,max=255"`
 }
 
 func (req *CategoryRequest) ToDomain() (res *schema.Category) {
-	res.Name = req.Name
-	return
+	log.Println("req", req)
+	return &schema.Category{
+		Name: req.Name,
+	}
 }

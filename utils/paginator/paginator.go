@@ -12,13 +12,13 @@ const (
 )
 
 type Pagination struct {
-	Limit        int   `json:"limit,omitempty"`
+	Limit        int   `json:"limit"`
 	Offset       int   `json:"-"`
-	Page         int   `json:"page,omitempty"`
-	NextPage     int   `json:"next_page,omitempty"`
-	PreviousPage int   `json:"previous_page,omitempty"`
-	Count        int64 `json:"count,omitempty"`
-	TotalPage    int   `json:"total_page,omitempty"`
+	Page         int   `json:"page"`
+	NextPage     int   `json:"next_page"`
+	PreviousPage int   `json:"previous_page"`
+	Count        int64 `json:"count"`
+	TotalPage    int   `json:"total_page"`
 }
 
 func Paging(p *Pagination) *Pagination {
@@ -52,7 +52,7 @@ func Paginate(c *fiber.Ctx) (*Pagination, error) {
 	if p.Page == 0 {
 		p.Page = 1
 	}
-	
+
 	p.Offset = (p.Page - 1) * p.Limit
 	return p, nil
 }

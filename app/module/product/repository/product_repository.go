@@ -28,7 +28,7 @@ func NewProductRepository(db *database.Database) ProductRepository {
 
 func (_i *productRepository) GetProducts(req request.ProductsRequest) (products []*schema.Product, paging paginator.Pagination, err error) {
 	var count int64
-	query := _i.DB.DB.Model(&schema.Product{})
+	query := _i.DB.DB.Model(&schema.Product{}).Preload("Categories")
 	query.Count(&count)
 
 	req.Pagination.Count = count

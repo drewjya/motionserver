@@ -16,12 +16,13 @@ type ProductRequest struct {
 	Description string `form:"description" json:"description" validate:"required"`
 	Price       uint64 `form:"price" json:"price" validate:"required"`
 	Stock       uint   `form:"stock" json:"stock" validate:"required"`
-	SerialCode  string `form:"serial_code" json:"serial_code" validate:"required"`
+	SerialCode  string `form:"serialCode" json:"serialCode" validate:"required"`
 	Image       string
 	Categories  []uint64 `form:"categories" json:"categories" validate:"required"`
 }
 
-func (req *ProductRequest) ToDomain() (res *schema.Product) {
+func (req *ProductRequest) ToDomain() *schema.Product {
+	res := new(schema.Product)
 	res.Name = req.Name
 	res.Description = req.Description
 	res.Price = req.Price

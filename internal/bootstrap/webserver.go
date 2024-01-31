@@ -22,7 +22,7 @@ func NewFiber(cfg *config.Config) *fiber.App {
 			EnablePrintRoutes: true,
 			ErrorHandler:      response.ErrorHandler,
 			IdleTimeout:       cfg.App.IdleTimeout * time.Second,
-			Prefork:           cfg.App.Prefork,
+			Prefork:           false,
 		},
 	)
 	response.IsProduction = cfg.App.Production

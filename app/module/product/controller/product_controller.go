@@ -52,7 +52,7 @@ func (_i *productController) Store(c *fiber.Ctx) error {
 		return err
 	}
 	file, err := c.FormFile("image")
-	if err.Error() != "" {
+	if err != nil && err.Error() != "there is no uploaded file associated with the given key" {
 		return err
 	}
 	log.Println(file)

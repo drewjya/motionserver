@@ -36,12 +36,10 @@ func Protected(refresh bool) fiber.Handler {
 			if err != nil {
 				return c.Status(fiber.StatusUnauthorized).
 					JSON(response.Response{
-						Code: fiber.StatusUnauthorized,
-						Data: err.Error(),
-						Messages: []any{
-							"Invalid or expored JWT",
-						},
-						Meta: nil,
+						Code:     fiber.StatusUnauthorized,
+						Data:     nil,
+						Messages: response.RootMessage("unauthorized"),
+						Meta:     nil,
 					})
 
 			} else {
@@ -54,12 +52,10 @@ func Protected(refresh bool) fiber.Handler {
 
 				return c.Status(fiber.StatusUnauthorized).
 					JSON(response.Response{
-						Code: fiber.StatusUnauthorized,
-						Data: nil,
-						Messages: []any{
-							"Salah Token",
-						},
-						Meta: nil,
+						Code:     fiber.StatusUnauthorized,
+						Data:     nil,
+						Messages: response.RootMessage("wrong_token_type"),
+						Meta:     nil,
 					})
 			}
 
@@ -70,28 +66,12 @@ func Protected(refresh bool) fiber.Handler {
 func jwtError(c *fiber.Ctx, err error) error {
 
 	if err != nil {
-		if err.Error() == "Missing or malformed JWT" {
-			return c.Status(fiber.StatusBadRequest).
-				JSON(response.Response{
-					Code: fiber.StatusBadRequest,
-					Data: nil,
-					Messages: []any{
-						"Missing or malformed JWT",
-					},
-					Meta: nil,
-				},
-				)
-
-		}
-
 		return c.Status(fiber.StatusUnauthorized).
 			JSON(response.Response{
-				Code: fiber.StatusUnauthorized,
-				Data: err.Error(),
-				Messages: []any{
-					"Invalid or expored JWT",
-				},
-				Meta: nil,
+				Code:     fiber.StatusUnauthorized,
+				Data:     nil,
+				Messages: response.RootMessage("unauthorized"),
+				Meta:     nil,
 			})
 
 	}
