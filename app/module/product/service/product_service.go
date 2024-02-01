@@ -16,7 +16,7 @@ type productService struct {
 
 type ProductService interface {
 	All(req request.ProductsRequest) (categories []*response.Product, paging paginator.Pagination, err error)
-	Show(id uint64) (category *response.Product, err error)
+	Show(id uint64) (product *response.Product, err error)
 	Store(req request.ProductRequest) (err error)
 }
 

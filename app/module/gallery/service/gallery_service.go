@@ -15,7 +15,8 @@ type galleryService struct {
 }
 
 type GalleryService interface {
-	All(req request.GalleriesRequest) (categories []*response.Gallery, paging paginator.Pagination, err error)
+	All(req request.GalleriesRequest) (galleries []*response.Gallery, paging paginator.Pagination, err error)
+	Show(id uint64) (gallery *response.Gallery, err error)
 	Store(req request.GalleryRequest) (err error)
 	Update(id uint64, req request.GalleryRequest) (err error)
 }
@@ -40,6 +41,17 @@ func (_i *galleryService) All(req request.GalleriesRequest) (galleries []*respon
 	}
 	return
 
+}
+
+func (_i *galleryService) Show(id uint64) (gallery *response.Gallery, err error) {
+	result, err := _i.Repo.FindOne(id)
+	if err != nil {
+		return
+	}
+	ctx := context.Background()
+	img := _i.Minio.GenerateLink(ctx, result.Image)
+	gallery = response.FromDomain(result, img)
+	return
 }
 
 func (_i *galleryService) Store(req request.GalleryRequest) (err error) {

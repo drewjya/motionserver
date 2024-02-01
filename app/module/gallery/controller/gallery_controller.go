@@ -6,6 +6,7 @@ import (
 	koderor "motionserver/utils/error"
 	"motionserver/utils/paginator"
 	"motionserver/utils/response"
+	"strconv"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -17,6 +18,7 @@ type galleryController struct {
 
 type GalleryController interface {
 	Index(c *fiber.Ctx) error
+	Show(c *fiber.Ctx) error
 	Store(c *fiber.Ctx) error
 }
 
@@ -44,6 +46,22 @@ func (_i *galleryController) Index(c *fiber.Ctx) error {
 		Messages: response.RootMessage("success retrieve galleries"),
 		Data:     galleries,
 		Meta:     paging,
+	})
+}
+
+func (_i *galleryController) Show(c *fiber.Ctx) error {
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+	if err != nil {
+		return err
+	}
+	gallery, err := _i.galleryService.Show(id)
+	if err != nil {
+		return err
+	}
+
+	return response.Resp(c, response.Response{
+		Messages: response.RootMessage("success retrieve gallery"),
+		Data:     gallery,
 	})
 }
 
