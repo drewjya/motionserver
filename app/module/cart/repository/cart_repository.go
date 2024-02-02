@@ -16,7 +16,7 @@ type cartRepository struct {
 
 type CartRepository interface {
 	FindCartByUserId(req request.CartsRequest) (carts []*schema.Cart, paging paginator.Pagination, err error)
-	FindOne(id uint) (gallery *schema.Cart, err error)
+	FindOne(id uint) (cart *schema.Cart, err error)
 	Create(cart *schema.Cart) (err error)
 	Update(id uint, cart *schema.Cart) (err error)
 }
@@ -53,6 +53,15 @@ func (_i *cartRepository) FindCartByUserId(req request.CartsRequest) (carts []*s
 }
 
 func (_i *cartRepository) Create(cart *schema.Cart) (err error) {
+	var cval *schema.Cart
+	_i.DB.DB.Where(schema.Cart{
+		AccountID: cart.AccountID,
+		ProductID: cart.ProductID,
+	}).First(&cart)
+	if cval != nil {
+		cart.Quantity += cval.Quantity
+		return _i.DB.DB.Save(&cart).Error
+	}
 	return _i.DB.DB.Save(&cart).Error
 }
 

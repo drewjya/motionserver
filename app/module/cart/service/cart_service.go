@@ -59,6 +59,8 @@ func (_i *cartService) Store(req request.CartRequest) (err error) {
 	request := req.ToDomain()
 	request.AccountID = acc.ID
 
+	
+
 	return _i.Repo.Create(request)
 
 }
