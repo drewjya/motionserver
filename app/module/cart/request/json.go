@@ -13,7 +13,7 @@ type CartsRequest struct {
 }
 
 type CartRequest struct {
-	AccountId uint
+	UserId    uint
 	ProductId uint   `json:"productId"`
 	Quantity  uint32 `json:"quantity"`
 }
@@ -26,6 +26,6 @@ func (req *CartRequest) ToDomain() (r *schema.Cart) {
 	res := new(schema.Cart)
 	res.ProductID = req.ProductId
 	res.Quantity = int32(req.Quantity)
-	res.AccountID = req.AccountId
+
 	return res
 }

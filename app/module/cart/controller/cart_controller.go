@@ -17,13 +17,36 @@ type cartController struct {
 
 type CartController interface {
 	Index(c *fiber.Ctx) error
-	
+	Store(c *fiber.Ctx) error
 }
 
 func NewCartController(cartService service.CartService) CartController {
 	return &cartController{
 		cartService: cartService,
 	}
+}
+
+func (_i *cartController) Store(c *fiber.Ctx) error {
+	var req request.CartRequest
+	if err := c.BodyParser(&req); err != nil {
+		return err
+	}
+	jwt := c.Locals("token").(*middleware.JWTClaims)
+	id, err := strconv.ParseUint(jwt.ID, 10, 64)
+	if err != nil {
+		return err
+	}
+	req.UserId = uint(id)
+
+	err = _i.cartService.Store(req)
+	if err != nil {
+		return err
+	}
+	return response.Resp(c, response.Response{
+		Data:     nil,
+		Messages: response.RootMessage("success create cart"),
+		Code:     fiber.StatusCreated,
+	})
 }
 
 func (_i *cartController) Index(c *fiber.Ctx) error {

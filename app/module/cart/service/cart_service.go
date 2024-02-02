@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	auth "motionserver/app/module/auth/repository"
 	"motionserver/app/module/cart/repository"
 	"motionserver/app/module/cart/request"
 	"motionserver/app/module/cart/response"
@@ -12,6 +13,7 @@ import (
 
 type cartService struct {
 	Repo  repository.CartRepository
+	Auth  auth.AuthRepository
 	Minio *minio.Minio
 }
 
@@ -22,9 +24,10 @@ type CartService interface {
 	Update(id uint64, req request.UpdateCartRequest) (err error)
 }
 
-func NewCartService(repo repository.CartRepository, Minio *minio.Minio) CartService {
+func NewCartService(repo repository.CartRepository, Minio *minio.Minio, Auth auth.AuthRepository) CartService {
 	return &cartService{
 		Repo:  repo,
+		Auth:  Auth,
 		Minio: Minio,
 	}
 
@@ -48,8 +51,14 @@ func (_i *cartService) All(req request.CartsRequest) (carts []*response.Cart, pa
 }
 
 func (_i *cartService) Store(req request.CartRequest) (err error) {
+	acc, err := _i.Auth.FindAccountByUserId(req.UserId)
+	if err != nil {
+		return
+	}
+
 	request := req.ToDomain()
-	
+	request.AccountID = acc.ID
+
 	return _i.Repo.Create(request)
 
 }
