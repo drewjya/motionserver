@@ -57,10 +57,12 @@ func (_i *cartRepository) Create(cart *schema.Cart) (err error) {
 	_i.DB.DB.Where(schema.Cart{
 		AccountID: cart.AccountID,
 		ProductID: cart.ProductID,
-	}).First(&cart)
+	}).First(&cval)
+	fmt.Println(cval)
 	if cval != nil {
-		cart.Quantity += cval.Quantity
-		return _i.DB.DB.Save(&cart).Error
+		cval.Quantity = cval.Quantity + cart.Quantity
+
+		return _i.DB.DB.Save(&cval).Error
 	}
 	return _i.DB.DB.Save(&cart).Error
 }
