@@ -8,8 +8,8 @@ prefork = true
 production = false
 
 [db.postgres]
-# dsn = "postgresql://postgres:QgBgNo0uEAVtyK1@postgres:5432/postgres" #
-dsn = "postgresql://postgres:QgBgNo0uEAVtyK1@62.72.57.110:5432/postgres" #
+dsn = "postgresql://postgres:QgBgNo0uEAVtyK1@postgres:5432/postgres" #
+# dsn = "postgresql://postgres:QgBgNo0uEAVtyK1@62.72.57.110:5432/postgres" #
  
 [minio]
 endpoint = "minio.motionsportindonesia.id"
