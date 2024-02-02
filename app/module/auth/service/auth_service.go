@@ -18,6 +18,8 @@ type authService struct {
 type AuthService interface {
 	Login(req request.LoginRequest) (res response.LoginResponse, err error)
 	Register(req request.RegisterRequest) (res response.RegisterResponse, err error)
+	Profile(userId uint) (res response.LoginResponse, err error)
+	RefreshToken(userId uint64) (res *middleware.TokenResponse, err error)
 }
 
 func NewAuthService(repo repository.AuthRepository) AuthService {
@@ -26,6 +28,25 @@ func NewAuthService(repo repository.AuthRepository) AuthService {
 	}
 }
 
+func (_i *authService) RefreshToken(userId uint64) (res *middleware.TokenResponse, err error) {
+	res, err = middleware.GenerateTokenUser(middleware.TokenData{
+		UserId: userId,
+		Roles:  "user",
+	})
+	return
+}
+
+func (_i *authService) Profile(userId uint) (res response.LoginResponse, err error) {
+	user, err := _i.Repo.FindUserByUserId(userId)
+	if err != nil {
+		return
+	}
+	res.Name = user.Account.Name
+	res.Email = user.Email
+	res.UserId = uint64(user.ID)
+	res.AccountId = uint64(user.Account.ID)
+	return
+}
 func (_i *authService) Login(req request.LoginRequest) (res response.LoginResponse, err error) {
 	user, err := _i.Repo.FindUserByEmail(req.Email)
 	if err != nil {

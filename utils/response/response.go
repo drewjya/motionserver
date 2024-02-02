@@ -3,7 +3,6 @@ package response
 import (
 	"fmt"
 	koderor "motionserver/utils/error"
-	"reflect"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
@@ -49,7 +48,6 @@ var ErrorHandler = func(c *fiber.Ctx, err error) error {
 	}
 
 	// handle errors
-	fmt.Println(reflect.TypeOf(err))
 	if c, ok := err.(*koderor.ErrorsKode); ok {
 		resp.Code = fiber.StatusBadRequest
 		erv := map[string]string{}

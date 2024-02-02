@@ -1,9 +1,11 @@
 package controller
 
 import (
+	"motionserver/app/middleware"
 	"motionserver/app/module/auth/request"
 	"motionserver/app/module/auth/service"
 	"motionserver/utils/response"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,12 +17,49 @@ type authController struct {
 type AuthController interface {
 	Login(c *fiber.Ctx) error
 	Register(c *fiber.Ctx) error
+	Profile(c *fiber.Ctx) error
+	Refresh(c *fiber.Ctx) (err error)
 }
 
 func NewAuthController(authService service.AuthService) AuthController {
 	return &authController{
 		authService: authService,
 	}
+}
+
+func (_i *authController) Refresh(c *fiber.Ctx) (err error) {
+	jwt := c.Locals("token").(*middleware.JWTClaims)
+	id, err := strconv.ParseUint(jwt.ID, 10, 64)
+	if err != nil {
+		return
+	}
+	res, err := _i.authService.RefreshToken(id)
+	if err != nil {
+		return
+	}
+	return response.Resp(c, response.Response{
+		Data:     res,
+		Messages: response.RootMessage("Refresh token success"),
+		Code:     fiber.StatusOK,
+	})
+
+}
+
+func (_i *authController) Profile(c *fiber.Ctx) error {
+	jwt := c.Locals("token").(*middleware.JWTClaims)
+	id, err := strconv.ParseUint(jwt.ID, 10, 64)
+	if err != nil {
+		return err
+	}
+	res, err := _i.authService.Profile(uint(id))
+	if err != nil {
+		return err
+	}
+	return response.Resp(c, response.Response{
+		Data:     res,
+		Messages: response.RootMessage("Profile success"),
+		Code:     fiber.StatusOK,
+	})
 }
 
 func (_i *authController) Login(c *fiber.Ctx) error {
@@ -35,8 +74,7 @@ func (_i *authController) Login(c *fiber.Ctx) error {
 	return response.Resp(c, response.Response{
 		Data:     res,
 		Messages: response.RootMessage("Login success"),
-
-		Code: fiber.StatusOK,
+		Code:     fiber.StatusOK,
 	})
 }
 

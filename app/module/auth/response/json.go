@@ -9,7 +9,7 @@ type LoginResponse struct {
 	Email     string                   `json:"email"`
 	UserId    uint64                   `json:"userId"`
 	AccountId uint64                   `json:"accountId"`
-	Token     middleware.TokenResponse `json:"token"`
+	Token     middleware.TokenResponse `json:"token,omitempty"`
 }
 
 type RegisterResponse struct {
@@ -18,3 +18,5 @@ type RegisterResponse struct {
 	UserId    uint64 `json:"userId"`
 	AccountId uint64 `json:"accountId"`
 }
+
+

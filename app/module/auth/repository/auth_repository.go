@@ -15,7 +15,7 @@ type AuthRepository interface {
 	FindUserByEmail(email string) (user *schema.User, err error)
 	CreateUser(user *schema.User) (res *schema.User, err error)
 	UpdateLastLogin(user *schema.User) (res *schema.User, err error)
-
+	FindUserByUserId(userId uint) (user *schema.User, err error)
 	FindAccountByUserId(userId uint) (account *schema.Account, err error)
 }
 
@@ -31,6 +31,11 @@ func (_i *authRepository) FindAccountByUserId(userId uint) (account *schema.Acco
 	}
 
 	return account, nil
+}
+
+func (_i *authRepository) FindUserByUserId(userId uint) (user *schema.User, err error) {
+	err = _i.DB.DB.Where("id = ?", userId).Preload("Account").First(&user).Error
+	return
 }
 
 func (_i *authRepository) FindUserByEmail(email string) (user *schema.User, err error) {

@@ -43,6 +43,7 @@ func Protected(refresh bool) fiber.Handler {
 					})
 
 			} else {
+				c.Locals("token", jwtc)
 				if jwtc.Type == conf.Middleware.Jwt.AccessKey && !refresh {
 					return c.Next()
 				}

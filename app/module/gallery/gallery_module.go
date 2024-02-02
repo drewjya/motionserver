@@ -34,6 +34,7 @@ func (_i *GalleryRouter) RegisterGalleryRoutes() {
 	galleryController := _i.Controller.Gallery
 	_i.App.Route("/gallery", func(router fiber.Router) {
 		router.Get("", galleryController.Index)
+		router.Get("/:id", galleryController.Show)
 		router.Post("", middleware.Protected(false), galleryController.Store)
 	})
 }

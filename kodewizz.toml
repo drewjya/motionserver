@@ -1,0 +1,5 @@
+name = "motionserver"
+version = "0.1.0"
+author = "kodewizz"
+framework = "fiber"
+		
