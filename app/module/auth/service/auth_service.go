@@ -44,6 +44,7 @@ func (_i *authService) Profile(userId uint) (res response.LoginResponse, err err
 	res.Name = user.Account.Name
 	res.Email = user.Email
 	res.UserId = uint64(user.ID)
+	res.Role = string(user.Role)
 	res.AccountId = uint64(user.Account.ID)
 	return
 }
@@ -72,7 +73,7 @@ func (_i *authService) Login(req request.LoginRequest) (res response.LoginRespon
 
 	resp, err := middleware.GenerateTokenUser(middleware.TokenData{
 		UserId: uint64(user.ID),
-		Roles:  "user",
+		Roles:  string(user.Role),
 	})
 
 	if err != nil {
@@ -81,6 +82,7 @@ func (_i *authService) Login(req request.LoginRequest) (res response.LoginRespon
 
 	res.Name = user.Account.Name
 	res.Email = user.Email
+	res.Role = string(user.Role)
 	res.UserId = uint64(user.ID)
 	res.AccountId = uint64(user.Account.ID)
 
@@ -91,6 +93,12 @@ func (_i *authService) Login(req request.LoginRequest) (res response.LoginRespon
 }
 
 func (_i *authService) Register(req request.RegisterRequest) (res response.RegisterResponse, err error) {
+	// log.Println(*req.Role, "role")
+	if req.Role == nil {
+		user := schema.Basic
+		req.Role = &user
+	}
+
 	user, err := _i.Repo.FindUserByEmail(req.Email)
 	if err != nil && err.Error() != "record not found" {
 		return
@@ -108,6 +116,7 @@ func (_i *authService) Register(req request.RegisterRequest) (res response.Regis
 	newUser := schema.User{
 		Email:          req.Email,
 		Password:       newPassword,
+		Role:           *req.Role,
 		Account:        schema.Account{Name: req.Name},
 		LastAccessedAt: time.Now(),
 	}
@@ -118,7 +127,7 @@ func (_i *authService) Register(req request.RegisterRequest) (res response.Regis
 	res.Email = user.Email
 	res.UserId = uint64(user.ID)
 	res.AccountId = uint64(user.Account.ID)
-
+	res.Role = string(user.Role)
 	return
 
 }

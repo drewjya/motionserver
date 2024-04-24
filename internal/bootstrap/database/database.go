@@ -1,6 +1,7 @@
 package database
 
 import (
+	"log"
 	"motionserver/app/database/schema"
 	"motionserver/app/database/seeds"
 	"motionserver/internal/bootstrap/seeder"
@@ -48,6 +49,16 @@ func (_db *Database) ShutdownDatabase() {
 }
 
 func (_db *Database) MigrateModels() {
+	err := _db.DB.Exec(`
+	DO $$ BEGIN 
+		CREATE TYPE role as ENUM ('admin', 'superadmin', 'user')	;
+	EXCEPTION 
+		WHEN duplicate_object THEN null;
+	END $$;
+	`).Error
+	if err != nil {
+		log.Println(err)
+	}
 	if err := _db.DB.AutoMigrate(
 		Models()...,
 	); err != nil {

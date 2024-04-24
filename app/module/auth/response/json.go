@@ -9,6 +9,7 @@ type LoginResponse struct {
 	Email     string                   `json:"email"`
 	UserId    uint64                   `json:"userId"`
 	AccountId uint64                   `json:"accountId"`
+	Role      string                   `json:"role"`
 	Token     middleware.TokenResponse `json:"token,omitempty"`
 }
 
@@ -17,6 +18,5 @@ type RegisterResponse struct {
 	Email     string `json:"email"`
 	UserId    uint64 `json:"userId"`
 	AccountId uint64 `json:"accountId"`
+	Role      string `json:"role"`
 }
-
-

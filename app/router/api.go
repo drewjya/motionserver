@@ -9,7 +9,6 @@ import (
 	"motionserver/utils/config"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/swagger"
 )
 
 type Router struct {
@@ -50,7 +49,6 @@ func (r *Router) Register() {
 	})
 
 	// Swagger Documentation
-	r.App.Get("/swagger/*", swagger.HandlerDefault)
 
 	// Register routes of modules
 	r.AuthRouter.RegisterAuthRoutes()
