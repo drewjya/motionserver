@@ -19,7 +19,7 @@ type ProductRequest struct {
 	Stock       uint   `form:"stock" json:"stock" validate:"required"`
 	SerialCode  string `form:"serialCode" json:"serialCode" validate:"required"`
 	Image       string
-	Categories  []uint64 `form:"categories" json:"categories" validate:"required"`
+	Categories  []uint64
 	File        *multipart.FileHeader
 }
 

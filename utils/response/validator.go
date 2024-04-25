@@ -30,10 +30,12 @@ func init() {
 }
 
 func ValidateStruct(input any) error {
+
 	return validate.Struct(input)
 }
 
 func ParseBody(c *fiber.Ctx, body any) error {
+
 	if err := c.BodyParser(body); err != nil {
 		return err
 	}
@@ -50,6 +52,7 @@ func ParseAndValidate(c *fiber.Ctx, body any) error {
 
 		return ValidateStruct(v.Elem().Interface())
 	case reflect.Struct:
+
 		ParseBody(c, &body)
 
 		return ValidateStruct(v)

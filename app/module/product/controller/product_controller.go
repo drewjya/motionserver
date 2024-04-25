@@ -1,12 +1,14 @@
 package controller
 
 import (
+	"fmt"
 	"motionserver/app/module/product/request"
 	"motionserver/app/module/product/service"
 	koderor "motionserver/utils/error"
 	"motionserver/utils/paginator"
 	"motionserver/utils/response"
 	"strconv"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -66,6 +68,7 @@ func (_i *productController) Show(c *fiber.Ctx) error {
 func (_i *productController) Store(c *fiber.Ctx) error {
 	req := new(request.ProductRequest)
 	file, errNew := c.FormFile("image")
+
 	var vale koderor.KodeError
 	var err error
 	if errNew != nil {
@@ -75,6 +78,19 @@ func (_i *productController) Store(c *fiber.Ctx) error {
 		}
 
 		vale = koderor.New("image", errVall)
+	}
+
+	categoriesString := c.FormValue("categories")
+	categories := make([]uint64, 0)
+	if categoriesString != "" {
+		splitString := strings.Split(categoriesString, ", ")
+		for _, v := range splitString {
+			id, err := strconv.ParseUint(v, 10, 64)
+			if err != nil {
+				return err
+			}
+			categories = append(categories, id)
+		}
 	}
 	err = response.ParseAndValidate(c, req)
 	if err != nil || vale != nil {
@@ -89,7 +105,8 @@ func (_i *productController) Store(c *fiber.Ctx) error {
 		return koderor.NewErrors(&val, vale.(*koderor.ErrorKode))
 	}
 	req.File = file
-	req.File = file
+	req.Categories = categories
+	fmt.Println(req, "REQ")
 
 	err = _i.productService.Store(*req)
 	if err != nil {
