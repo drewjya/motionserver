@@ -19,7 +19,7 @@ type cartService struct {
 
 // Delete implements CartService.
 func (_i *cartService) Delete(id uint64) (err error) {
-	return _i.Delete(id)
+	return _i.Repo.DeleteCart(uint(id))
 }
 
 type CartService interface {
