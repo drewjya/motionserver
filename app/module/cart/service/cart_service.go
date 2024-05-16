@@ -64,6 +64,10 @@ func (_i *cartService) Store(req request.CartRequest) (err error) {
 
 	request := req.ToDomain()
 	request.AccountID = acc.ID
+	fmt.Println(request.ProductID)
+	fmt.Println(request.AccountID)
+	fmt.Println(request.Quantity)
+	fmt.Println("=========REQUEST=============")
 
 	return _i.Repo.Create(request)
 

@@ -74,6 +74,7 @@ func Start(lifecycle fx.Lifecycle, cfg *config.Config, fiber *fiber.App, router 
 				migrate := flag.Bool("migrate", false, "migrate the database")
 				seeder := flag.Bool("seed", false, "seed the database")
 				reset := flag.Bool("reset", false, "reset the database")
+
 				flag.Parse()
 				if *reset {
 					database.ResetModels()

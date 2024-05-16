@@ -31,7 +31,7 @@ func NewCartRepository(db *database.Database) CartRepository {
 }
 
 func (_i *cartRepository) DeleteCart(id uint) (err error) {
-	return _i.DB.DB.Delete(&schema.Cart{}, id).Error
+	return _i.DB.DB.Unscoped().Delete(&schema.Cart{}, id).Error
 }
 func (_i *cartRepository) FindCartByUserId(req request.CartsRequest) (carts []*schema.Cart, paging paginator.Pagination, err error) {
 	account := schema.Account{}
@@ -59,18 +59,25 @@ func (_i *cartRepository) FindCartByUserId(req request.CartsRequest) (carts []*s
 }
 
 func (_i *cartRepository) Create(cart *schema.Cart) (err error) {
-	var cval *schema.Cart
-	_i.DB.DB.Where(schema.Cart{
+	var cval *schema.Cart = nil
+	err = _i.DB.DB.Where(schema.Cart{
 		AccountID: cart.AccountID,
 		ProductID: cart.ProductID,
-	}).First(&cval)
-	fmt.Println(cval)
-	if cval != nil {
-		cval.Quantity = cval.Quantity + cart.Quantity
+	}).First(&cval).Error
 
+	fmt.Println(cart.ProductID, cval.ProductID)
+	fmt.Println(cart, err)
+
+	if err == nil {
+		cval.Quantity = cval.Quantity + cart.Quantity
+		fmt.Printf("MASUK")
 		return _i.DB.DB.Save(&cval).Error
 	}
-	return _i.DB.DB.Save(&cart).Error
+	return _i.DB.DB.Save(&schema.Cart{
+		AccountID: cart.AccountID,
+		Quantity:  cart.Quantity,
+		ProductID: cart.ProductID,
+	}).Error
 }
 
 func (_i *cartRepository) Update(id uint, cart *schema.Cart) (err error) {
