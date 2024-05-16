@@ -15,9 +15,52 @@ type cartController struct {
 	cartService service.CartService
 }
 
+// Delete implements CartController.
+func (_i *cartController) Delete(c *fiber.Ctx) error {
+
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+
+	if err != nil {
+		return err
+	}
+	err = _i.cartService.Delete(id)
+	if err != nil {
+		return err
+	}
+	return response.Resp(c, response.Response{
+		Data:     nil,
+		Messages: response.RootMessage("success delete cart"),
+		Code:     fiber.StatusCreated,
+	})
+}
+
+// Update implements CartController.
+func (_i *cartController) Update(c *fiber.Ctx) error {
+	var req request.UpdateCartRequest
+	if err := c.BodyParser(&req); err != nil {
+		return err
+	}
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+	if err != nil {
+		return err
+	}
+
+	err = _i.cartService.Update(id, req)
+	if err != nil {
+		return err
+	}
+	return response.Resp(c, response.Response{
+		Data:     nil,
+		Messages: response.RootMessage("success update cart"),
+		Code:     fiber.StatusCreated,
+	})
+}
+
 type CartController interface {
 	Index(c *fiber.Ctx) error
 	Store(c *fiber.Ctx) error
+	Update(c *fiber.Ctx) error
+	Delete(c *fiber.Ctx) error
 }
 
 func NewCartController(cartService service.CartService) CartController {

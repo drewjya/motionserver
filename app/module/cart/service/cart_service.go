@@ -17,11 +17,17 @@ type cartService struct {
 	Minio *minio.Minio
 }
 
+// Delete implements CartService.
+func (_i *cartService) Delete(id uint64) (err error) {
+	return _i.Delete(id)
+}
+
 type CartService interface {
 	All(req request.CartsRequest) (carts []*response.Cart, paging paginator.Pagination, err error)
 
 	Store(req request.CartRequest) (err error)
 	Update(id uint64, req request.UpdateCartRequest) (err error)
+	Delete(id uint64) (err error)
 }
 
 func NewCartService(repo repository.CartRepository, Minio *minio.Minio, Auth auth.AuthRepository) CartService {
@@ -58,8 +64,6 @@ func (_i *cartService) Store(req request.CartRequest) (err error) {
 
 	request := req.ToDomain()
 	request.AccountID = acc.ID
-
-	
 
 	return _i.Repo.Create(request)
 

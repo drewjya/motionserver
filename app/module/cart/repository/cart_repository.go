@@ -14,11 +14,14 @@ type cartRepository struct {
 	DB *database.Database
 }
 
+// DeleteCart implements CartRepository.
+
 type CartRepository interface {
 	FindCartByUserId(req request.CartsRequest) (carts []*schema.Cart, paging paginator.Pagination, err error)
 	FindOne(id uint) (cart *schema.Cart, err error)
 	Create(cart *schema.Cart) (err error)
 	Update(id uint, cart *schema.Cart) (err error)
+	DeleteCart(id uint) (err error)
 }
 
 func NewCartRepository(db *database.Database) CartRepository {
@@ -27,6 +30,9 @@ func NewCartRepository(db *database.Database) CartRepository {
 	}
 }
 
+func (_i *cartRepository) DeleteCart(id uint) (err error) {
+	return _i.DB.DB.Delete(&schema.Cart{}, id).Error
+}
 func (_i *cartRepository) FindCartByUserId(req request.CartsRequest) (carts []*schema.Cart, paging paginator.Pagination, err error) {
 	account := schema.Account{}
 	err = _i.DB.DB.Where("user_id = ?", req.UserId).First(&account).Error

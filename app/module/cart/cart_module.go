@@ -35,5 +35,7 @@ func (_i *CartRouter) RegisterCartRoutes() {
 	_i.App.Route("/cart", func(router fiber.Router) {
 		router.Get("", middleware.Protected(false), cartController.Index)
 		router.Post("", middleware.Protected(false), cartController.Store)
+		router.Put("/:id", middleware.Protected(false), cartController.Update)
+		router.Delete("/:id", middleware.Protected(false), cartController.Delete)
 	})
 }
