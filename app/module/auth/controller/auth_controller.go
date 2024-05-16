@@ -17,7 +17,6 @@ type authController struct {
 type AuthController interface {
 	Login(c *fiber.Ctx) error
 	Register(c *fiber.Ctx) error
-	Profile(c *fiber.Ctx) error
 	Refresh(c *fiber.Ctx) (err error)
 }
 
@@ -43,23 +42,6 @@ func (_i *authController) Refresh(c *fiber.Ctx) (err error) {
 		Code:     fiber.StatusOK,
 	})
 
-}
-
-func (_i *authController) Profile(c *fiber.Ctx) error {
-	jwt := c.Locals("token").(*middleware.JWTClaims)
-	id, err := strconv.ParseUint(jwt.ID, 10, 64)
-	if err != nil {
-		return err
-	}
-	res, err := _i.authService.Profile(uint(id))
-	if err != nil {
-		return err
-	}
-	return response.Resp(c, response.Response{
-		Data:     res,
-		Messages: response.RootMessage("Profile success"),
-		Code:     fiber.StatusOK,
-	})
 }
 
 func (_i *authController) Login(c *fiber.Ctx) error {

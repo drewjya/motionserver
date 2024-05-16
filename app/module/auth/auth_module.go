@@ -33,7 +33,6 @@ func (_i *AuthRouter) RegisterAuthRoutes() {
 
 	authController := _i.Controller.Auth
 	_i.App.Route("/auth", func(auth fiber.Router) {
-		auth.Get("/profile", middleware.Protected(false), authController.Profile)
 		auth.Get("/refresh", middleware.Protected(true), authController.Refresh)
 		auth.Post("/login", authController.Login)
 		auth.Post("/register", authController.Register)
