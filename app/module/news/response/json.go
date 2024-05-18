@@ -20,7 +20,7 @@ func FromDomain(domain *schema.News, image string) (cart *News) {
 		return nil
 	}
 	val, _ := domain.Tanggal.Value()
-	format := val.(time.Time).Format("2006-01-02 15:02:05")
+	format := val.(time.Time).Format("2006-01-02")
 	return &News{
 		ID:      domain.ID,
 		Title:   domain.Title,

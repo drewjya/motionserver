@@ -43,7 +43,7 @@ func (_i *newsRepository) FindNews(req request.NewssRequest) (newss []*schema.Ne
 	req.Pagination.Count = count
 	req.Pagination = paginator.Paging(req.Pagination)
 
-	err = query.Offset(req.Pagination.Offset).Limit(req.Pagination.Limit).Find(&newss).Error
+	err = query.Offset(req.Pagination.Offset).Limit(req.Pagination.Limit).Order("tanggal").Find(&newss).Error
 	if err != nil {
 		fmt.Println(err)
 		return
