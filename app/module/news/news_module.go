@@ -34,6 +34,7 @@ func (_i *NewsRouter) RegisterNewsRoutes() {
 	newsController := _i.Controller.News
 	_i.App.Route("/news", func(router fiber.Router) {
 		router.Get("", newsController.Index)
+		router.Get("/id", newsController.FindOne)
 
 		router.Post("", middleware.Protected(false), newsController.Store)
 		router.Put("/:id", middleware.Protected(false), newsController.Update)

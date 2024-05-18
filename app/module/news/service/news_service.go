@@ -17,6 +17,18 @@ type newsService struct {
 	Minio *minio.Minio
 }
 
+// FindOne implements NewsService.
+func (_i *newsService) FindOne(id uint64) (news *response.News, err error) {
+	val, err := _i.Repo.FindOne(uint(id))
+	if err != nil {
+		return
+	}
+	ctx := context.Background()
+	img := _i.Minio.GenerateLink(ctx, val.Image)
+	news = response.FromDomain(val, img)
+	return
+}
+
 // Delete implements NewsService.
 func (_i *newsService) Delete(id uint64) (err error) {
 	return _i.Repo.DeleteNews(uint(id))
@@ -24,7 +36,7 @@ func (_i *newsService) Delete(id uint64) (err error) {
 
 type NewsService interface {
 	All(req request.NewssRequest) (newss []*response.News, paging paginator.Pagination, err error)
-
+	FindOne(id uint64) (news *response.News, err error)
 	Store(req request.NewsRequest) (err error)
 	Update(id uint64, req request.NewsRequest) (err error)
 	Delete(id uint64) (err error)

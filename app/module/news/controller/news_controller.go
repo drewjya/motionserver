@@ -17,6 +17,23 @@ type newsController struct {
 	newsService service.NewsService
 }
 
+// FindOne implements NewsController.
+func (_i *newsController) FindOne(c *fiber.Ctx) error {
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+	if err != nil {
+		return err
+	}
+	news, err := _i.newsService.FindOne(id)
+	if err != nil {
+		return err
+	}
+	return response.Resp(c, response.Response{
+		Data:     news,
+		Messages: response.RootMessage("success retrieve news"),
+		Code:     fiber.StatusOK,
+	})
+}
+
 // Delete implements NewsController.
 func (_i *newsController) Delete(c *fiber.Ctx) error {
 
@@ -63,6 +80,7 @@ type NewsController interface {
 	Store(c *fiber.Ctx) error
 	Update(c *fiber.Ctx) error
 	Delete(c *fiber.Ctx) error
+	FindOne(c *fiber.Ctx) error
 }
 
 func NewNewsController(newsService service.NewsService) NewsController {
