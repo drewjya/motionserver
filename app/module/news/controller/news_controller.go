@@ -99,6 +99,7 @@ func (_i *newsController) Store(c *fiber.Ctx) error {
 		return koderor.NewErrors(&val, vale.(*koderor.ErrorKode))
 	}
 	req.File = file
+	fmt.Println(req.File)
 	err = _i.newsService.Store(*req)
 	if err != nil {
 		return err

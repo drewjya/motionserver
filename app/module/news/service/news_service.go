@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	auth "motionserver/app/module/auth/repository"
 	"motionserver/app/module/news/repository"
 	"motionserver/app/module/news/request"
@@ -59,9 +60,11 @@ func (_i *newsService) Store(req request.NewsRequest) (err error) {
 		if err != nil {
 			return err
 		}
+		fmt.Println(*val, "VAL")
 		req.Image = *val
+		request = req.ToDomain()
 	}
-
+	fmt.Println(request.Image, "REQ")
 	return _i.Repo.Create(request)
 
 }
