@@ -5,6 +5,7 @@ import (
 	"motionserver/app/module/auth"
 	"motionserver/app/module/cart"
 	"motionserver/app/module/category"
+	"motionserver/app/module/compro"
 	"motionserver/app/module/gallery"
 	"motionserver/app/module/news"
 	"motionserver/app/module/product"
@@ -60,6 +61,7 @@ func main() {
 		gallery.NewGalleryModule,
 		cart.NewCartModule,
 		news.NewNewsModule,
+		compro.NewComproModule,
 
 		// start aplication
 		fx.Invoke(bootstrap.Start),

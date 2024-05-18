@@ -24,7 +24,10 @@ func (_i *comproRepository) Create(compro *schema.Compro) (err error) {
 // GetCompro implements ComproRepository.
 func (_i *comproRepository) GetCompro() (compro *schema.Compro, err error) {
 	if err := _i.DB.DB.First(&compro).Error; err != nil {
-		return nil, err
+		if err.Error() != "record not found" {
+			return nil, err
+		}
+		return nil, nil
 	}
 	return compro, nil
 }

@@ -31,6 +31,9 @@ func (_i *comproService) Show() (compro *response.Compro, err error) {
 	if err != nil {
 		return
 	}
+	if result == nil {
+		return nil, err
+	}
 	ctx := context.Background()
 	img := _i.Minio.GenerateLink(ctx, result.Image)
 	compro = response.FromDomain(result, img)
@@ -43,9 +46,12 @@ func (_i *comproService) Store(req request.ComproRequest) (err error) {
 		return
 	}
 	ctx := context.Background()
-	err = _i.Minio.DeleteFile(ctx, result.Image)
-	if err != nil {
-		return
+	if result != nil {
+
+		err = _i.Minio.DeleteFile(ctx, result.Image)
+		if err != nil {
+			return
+		}
 	}
 	if req.File != nil {
 		ctx := context.Background()
