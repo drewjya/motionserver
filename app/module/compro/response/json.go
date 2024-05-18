@@ -14,6 +14,7 @@ type Compro struct {
 	Tanggal  string `json:"tanggal"`
 	Data     string `json:"data"`
 	Image    string `json:"image"`
+	FileName string `json:"file_name"`
 }
 
 func FromDomain(domain *schema.Compro, image string) (compro *Compro) {
@@ -27,6 +28,7 @@ func FromDomain(domain *schema.Compro, image string) (compro *Compro) {
 		Title:    domain.Title,
 		Tanggal:  format,
 		Subtitle: domain.Subtitle,
+		FileName: domain.Image,
 		Data:     string(domain.Data),
 		Image:    image,
 	}
