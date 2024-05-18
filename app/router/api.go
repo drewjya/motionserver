@@ -5,6 +5,7 @@ import (
 	"motionserver/app/module/cart"
 	"motionserver/app/module/category"
 	"motionserver/app/module/gallery"
+	"motionserver/app/module/news"
 	"motionserver/app/module/product"
 	"motionserver/utils/config"
 
@@ -19,6 +20,7 @@ type Router struct {
 	ProductRouter  *product.ProductRouter
 	GalleryRouter  *gallery.GalleryRouter
 	CartRouter     *cart.CartRouter
+	NewsRouter     *news.NewsRouter
 }
 
 func NewRouter(
@@ -29,6 +31,7 @@ func NewRouter(
 	ProductRouter *product.ProductRouter,
 	GalleryRouter *gallery.GalleryRouter,
 	CartRouter *cart.CartRouter,
+	NewsRouter *news.NewsRouter,
 ) *Router {
 	return &Router{
 		App:            fiber,
@@ -38,6 +41,7 @@ func NewRouter(
 		ProductRouter:  ProductRouter,
 		GalleryRouter:  GalleryRouter,
 		CartRouter:     CartRouter,
+		NewsRouter:     NewsRouter,
 	}
 }
 
@@ -59,5 +63,6 @@ func (r *Router) Register() {
 
 	r.GalleryRouter.RegisterGalleryRoutes()
 	r.CartRouter.RegisterCartRoutes()
+	r.NewsRouter.RegisterNewsRoutes()
 
 }

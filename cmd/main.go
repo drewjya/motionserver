@@ -6,6 +6,7 @@ import (
 	"motionserver/app/module/cart"
 	"motionserver/app/module/category"
 	"motionserver/app/module/gallery"
+	"motionserver/app/module/news"
 	"motionserver/app/module/product"
 	"motionserver/app/router"
 	"motionserver/internal/bootstrap"
@@ -58,6 +59,7 @@ func main() {
 		product.NewProductModule,
 		gallery.NewGalleryModule,
 		cart.NewCartModule,
+		news.NewNewsModule,
 
 		// start aplication
 		fx.Invoke(bootstrap.Start),
