@@ -2,6 +2,7 @@ package router
 
 import (
 	"motionserver/app/module/auth"
+	"motionserver/app/module/banner"
 	"motionserver/app/module/cart"
 	"motionserver/app/module/category"
 	"motionserver/app/module/compro"
@@ -23,6 +24,7 @@ type Router struct {
 	CartRouter     *cart.CartRouter
 	NewsRouter     *news.NewsRouter
 	ComproRouter   *compro.ComproRouter
+	BannerRouter   *banner.BannerRouter
 }
 
 func NewRouter(
@@ -35,6 +37,7 @@ func NewRouter(
 	CartRouter *cart.CartRouter,
 	NewsRouter *news.NewsRouter,
 	ComproRouter *compro.ComproRouter,
+	BannerRouter *banner.BannerRouter,
 ) *Router {
 	return &Router{
 		App:            fiber,
@@ -46,6 +49,7 @@ func NewRouter(
 		CartRouter:     CartRouter,
 		NewsRouter:     NewsRouter,
 		ComproRouter:   ComproRouter,
+		BannerRouter:   BannerRouter,
 	}
 }
 
@@ -69,5 +73,6 @@ func (r *Router) Register() {
 	r.CartRouter.RegisterCartRoutes()
 	r.NewsRouter.RegisterNewsRoutes()
 	r.ComproRouter.RegisterComproRoutes()
+	r.BannerRouter.RegisterBannerRoutes()
 
 }

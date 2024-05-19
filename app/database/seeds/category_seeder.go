@@ -19,6 +19,7 @@ func (CategorySeeder) Seed(conn *gorm.DB) error {
 	categories := []schema.Category{
 		{
 			Name: "T-Shirt",
+			
 		},
 		{
 			Name: "Shirt",

@@ -13,9 +13,38 @@ type categoryController struct {
 	categoryService service.CategoryService
 }
 
+// GetYoutube implements CategoryController.
+func (_i *categoryController) GetYoutube(c *fiber.Ctx) error {
+	yt, err := _i.categoryService.GetYoutube()
+	if err != nil {
+		return err
+	}
+
+	return response.Resp(c, response.Response{
+		Messages: response.RootMessage("success retrieve youtube"),
+		Data:     yt,
+	})
+
+}
+
+// SetYoutube implements CategoryController.
+func (_i *categoryController) SetYoutube(c *fiber.Ctx) error {
+	err := _i.categoryService.SetYoutube()
+	if err != nil {
+		return err
+	}
+
+	return response.Resp(c, response.Response{
+		Messages: response.RootMessage("success set youtube"),
+	})
+}
+
 type CategoryController interface {
 	Index(c *fiber.Ctx) error
 	Store(c *fiber.Ctx) error
+
+	SetYoutube(c *fiber.Ctx) error
+	GetYoutube(c *fiber.Ctx) error
 }
 
 func NewCategoryController(categoryService service.CategoryService) CategoryController {

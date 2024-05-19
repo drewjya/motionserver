@@ -1,7 +1,7 @@
 package request
 
 import (
-	"log"
+	"mime/multipart"
 	"motionserver/app/database/schema"
 	"motionserver/utils/paginator"
 )
@@ -11,12 +11,19 @@ type CategoriesRequest struct {
 }
 
 type CategoryRequest struct {
-	Name string `form:"name" json:"name" validate:"required,min=3,max=255"`
+	Name  string `form:"name" json:"name" validate:"required,min=3,max=255"`
+	Image string
+	File  *multipart.FileHeader
 }
 
+
+
 func (req *CategoryRequest) ToDomain() (res *schema.Category) {
-	log.Println("req", req)
+	if req == nil {
+		return nil
+	}
 	return &schema.Category{
-		Name: req.Name,
+		Name:  req.Name,
+		Image: req.Image,
 	}
 }

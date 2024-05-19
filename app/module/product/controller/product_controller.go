@@ -18,8 +18,79 @@ type productController struct {
 	productService service.ProductService
 }
 
+// DeletePromotion implements ProductController.
+func (_i *productController) DeletePromotion(c *fiber.Ctx) error {
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
+	if err != nil {
+		return err
+	}
+	err = _i.productService.DeletePromotion(id)
+	if err != nil {
+		return err
+	}
+	return response.Resp(c, response.Response{
+		Messages: response.RootMessage("success delete promotion product")})
+}
+
+// CreatePromotion implements ProductController.
+func (_i *productController) CreatePromotion(c *fiber.Ctx) error {
+	req := new(request.PromotionProductRequest)
+	file, errNew := c.FormFile("image")
+
+	var vale koderor.KodeError
+	var err error
+	if errNew != nil {
+		errVall := errNew.Error()
+		if errVall == "there is no uploaded file associated with the given key" {
+			errVall = "Image field is required"
+		}
+
+		vale = koderor.New("image", errVall)
+	}
+
+	err = response.ParseAndValidate(c, req)
+	if err != nil || vale != nil {
+		if err != nil && vale == nil {
+			val := err.(validator.ValidationErrors)
+			return koderor.NewErrors(&val, nil)
+		}
+		if err == nil && vale != nil {
+			return koderor.NewErrors(nil, vale.(*koderor.ErrorKode))
+		}
+		val := err.(validator.ValidationErrors)
+		return koderor.NewErrors(&val, vale.(*koderor.ErrorKode))
+	}
+	req.File = file
+
+	err = _i.productService.CreatePromotion(*req)
+	if err != nil {
+		return err
+	}
+
+	return response.Resp(c, response.Response{
+		Messages: response.RootMessage("Product Successfully created"),
+	})
+}
+
+// Promotion implements ProductController.
+func (_i *productController) Promotion(c *fiber.Ctx) error {
+	products, err := _i.productService.GetAllPromotion()
+	if err != nil {
+		return err
+	}
+
+	return response.Resp(c, response.Response{
+		Messages: response.RootMessage("success retrieve products"),
+		Data:     products,
+	})
+}
+
 type ProductController interface {
 	Index(c *fiber.Ctx) error
+	Promotion(c *fiber.Ctx) error
+	CreatePromotion(c *fiber.Ctx) error
+	DeletePromotion(c *fiber.Ctx) error
+
 	Show(c *fiber.Ctx) error
 	Store(c *fiber.Ctx) error
 }

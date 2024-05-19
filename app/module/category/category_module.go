@@ -34,6 +34,12 @@ func (_i *CategoryRouter) RegisterCategoryRoutes() {
 	categoryController := _i.Controller.Cateogry
 	_i.App.Route("/category", func(router fiber.Router) {
 		router.Get("", categoryController.Index)
+
 		router.Post("", middleware.Protected(false), categoryController.Store)
+	})
+	_i.App.Route("/youtube", func(router fiber.Router) {
+		router.Get("", categoryController.GetYoutube)
+
+		router.Post("", categoryController.SetYoutube)
 	})
 }

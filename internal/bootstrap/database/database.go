@@ -86,6 +86,9 @@ func Models() []interface{} {
 		schema.Cart{},
 		schema.News{},
 		schema.Compro{},
+		schema.Banner{},
+		schema.Youtube{},
+		schema.PromotionProduct{},
 	}
 }
 

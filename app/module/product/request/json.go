@@ -12,6 +12,12 @@ type ProductsRequest struct {
 	Pagination *paginator.Pagination `json:"pagination"`
 }
 
+type PromotionProductRequest struct {
+	ProductId uint64 `form:"product_id" json:"product_id" validate:"required"`
+	Image     string
+	File      *multipart.FileHeader
+}
+
 type ProductRequest struct {
 	Name        string `form:"name" json:"name" validate:"required"`
 	Description string `form:"description" json:"description" validate:"required"`
@@ -43,6 +49,19 @@ func (req *ProductRequest) ToDomain() *schema.Product {
 		}
 		res.Categories = categories
 	}
+	return res
+
+}
+
+func (req *PromotionProductRequest) ToDomain() *schema.PromotionProduct {
+	res := new(schema.PromotionProduct)
+
+	res.Product = schema.Product{
+		Model: gorm.Model{
+			ID: uint(req.ProductId),
+		},
+	}
+
 	return res
 
 }

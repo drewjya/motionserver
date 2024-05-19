@@ -16,6 +16,12 @@ type Product struct {
 	Categories  []response.Categories `json:"categories"`
 }
 
+type PromotionProduct struct {
+	ID      uint64  `json:"id"`
+	Product Product `json:"product"`
+	Image   string  `json:"image"`
+}
+
 func FromDomain(domain *schema.Product, image string) (product *Product) {
 	if domain == nil {
 		return nil
@@ -23,7 +29,7 @@ func FromDomain(domain *schema.Product, image string) (product *Product) {
 	var categories []response.Categories
 	if domain.Categories != nil {
 		for _, v := range domain.Categories {
-			categories = append(categories, *response.FromDomain(&v))
+			categories = append(categories, *response.FromDomainNo(&v))
 		}
 
 	}
@@ -36,5 +42,17 @@ func FromDomain(domain *schema.Product, image string) (product *Product) {
 		Image:       image,
 		SerialCode:  domain.SerialCode,
 		Categories:  categories,
+	}
+}
+
+func FromPromotionProduct(domain *schema.PromotionProduct, imagePromotion string, imageProduct string) (product *PromotionProduct) {
+	if domain == nil {
+		return nil
+	}
+
+	return &PromotionProduct{
+		ID:      uint64(domain.Model.ID),
+		Product: *FromDomain(&domain.Product, imageProduct),
+		Image:   imagePromotion,
 	}
 }

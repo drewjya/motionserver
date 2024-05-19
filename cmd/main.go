@@ -3,6 +3,7 @@ package main
 import (
 	"motionserver/app/middleware"
 	"motionserver/app/module/auth"
+	"motionserver/app/module/banner"
 	"motionserver/app/module/cart"
 	"motionserver/app/module/category"
 	"motionserver/app/module/compro"
@@ -62,6 +63,7 @@ func main() {
 		cart.NewCartModule,
 		news.NewNewsModule,
 		compro.NewComproModule,
+		banner.NewBannerModule,
 
 		// start aplication
 		fx.Invoke(bootstrap.Start),

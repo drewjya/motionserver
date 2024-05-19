@@ -34,6 +34,8 @@ func (_i *ProductRouter) RegisterProductRoutes() {
 	productController := _i.Controller.Product
 	_i.App.Route("/product", func(router fiber.Router) {
 		router.Get("", productController.Index)
+		router.Get("/promotion", productController.Promotion)
+		router.Post("/promotion", productController.CreatePromotion)
 		router.Post("", middleware.Protected(false), productController.Store)
 		router.Get("/:id", productController.Show)
 	})
