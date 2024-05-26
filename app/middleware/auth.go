@@ -96,6 +96,7 @@ func ByRole(role schema.Role) fiber.Handler {
 
 			} else {
 				c.Locals("token", jwtc)
+				fmt.Println(role == schema.Role(jwtc.Roles), role, jwtc.Roles)
 				if jwtc.Type == conf.Middleware.Jwt.AccessKey && role == schema.Role(jwtc.Roles) {
 					return c.Next()
 				}
