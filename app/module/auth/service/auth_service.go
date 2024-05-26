@@ -28,17 +28,19 @@ func NewAuthService(repo repository.AuthRepository) AuthService {
 }
 
 func (_i *authService) RefreshToken(userId uint64) (res response.LoginResponse, err error) {
-	val, err := middleware.GenerateTokenUser(middleware.TokenData{
-		UserId: userId,
-		Roles:  "user",
-	})
-	if err != nil {
-		return
-	}
+
 	user, err := _i.Repo.FindUserByUserId(uint(userId))
 	if err != nil {
 		return
 	}
+	val, err := middleware.GenerateTokenUser(middleware.TokenData{
+		UserId: userId,
+		Roles:  string(user.Role),
+	})
+	if err != nil {
+		return
+	}
+
 	res.Name = user.Account.Name
 	res.Email = user.Email
 	res.UserId = uint64(user.ID)
