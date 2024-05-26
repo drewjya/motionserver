@@ -44,7 +44,6 @@ func (_min *Minio) ConnectMinio(ctx context.Context) {
 	} else {
 		_min.Log.Info().Msg("Connected the minio-server succesfully!")
 	}
-
 	err = minioClient.MakeBucket(ctx, cfg.Bucket, minio.MakeBucketOptions{})
 	if err != nil {
 		exist, err := minioClient.BucketExists(ctx, cfg.Bucket)
@@ -58,8 +57,8 @@ func (_min *Minio) ConnectMinio(ctx context.Context) {
 }
 
 func (_i *Minio) UploadFile(ctx context.Context, file multipart.FileHeader) (*string, error) {
-	bucket := _i.Cfg.Minio.Bucket
 
+	bucket := _i.Cfg.Minio.Bucket
 	buffer, err := file.Open()
 	if err != nil {
 		return nil, err

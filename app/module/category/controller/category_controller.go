@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"motionserver/app/module/category/request"
 	"motionserver/app/module/category/service"
 	koderor "motionserver/utils/error"
@@ -105,6 +106,7 @@ func (_i *categoryController) Store(c *fiber.Ctx) error {
 		return koderor.NewErrors(&val, vale.(*koderor.ErrorKode))
 	}
 	req.File = file
+	fmt.Println(req)
 
 	err = _i.categoryService.Store(*req)
 	if err != nil {

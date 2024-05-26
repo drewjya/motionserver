@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"motionserver/app/database/schema"
 	"motionserver/app/module/category/repository"
 	"motionserver/app/module/category/request"
@@ -14,7 +15,7 @@ import (
 
 type categoryService struct {
 	Repo  repository.CategoryRepository
-	Minio minio.Minio
+	Minio *minio.Minio
 }
 
 // GetYoutube implements CategoryService.
@@ -67,9 +68,10 @@ type CategoryService interface {
 	SetYoutube() (err error)
 }
 
-func NewCategoryService(repo repository.CategoryRepository) CategoryService {
+func NewCategoryService(repo repository.CategoryRepository, minio *minio.Minio) CategoryService {
 	return &categoryService{
-		Repo: repo,
+		Repo:  repo,
+		Minio: minio,
 	}
 }
 
@@ -93,5 +95,15 @@ func (_i *categoryService) All(req request.CategoriesRequest) (categories []*res
 }
 
 func (_i *categoryService) Store(req request.CategoryRequest) (err error) {
+	if req.File != nil {
+		fmt.Println(req.File.Filename)
+		ctx := context.Background()
+		val, err := _i.Minio.UploadFile(ctx, *req.File)
+		if err != nil {
+			fmt.Println("ERROR IMAGE", err)
+			return err
+		}
+		req.Image = *val
+	}
 	return _i.Repo.Create(req.ToDomain())
 }

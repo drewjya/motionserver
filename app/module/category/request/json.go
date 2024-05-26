@@ -16,8 +16,6 @@ type CategoryRequest struct {
 	File  *multipart.FileHeader
 }
 
-
-
 func (req *CategoryRequest) ToDomain() (res *schema.Category) {
 	if req == nil {
 		return nil
