@@ -53,7 +53,7 @@ func (req *ProductRequest) ToDomain() *schema.Product {
 
 }
 
-func (req *PromotionProductRequest) ToDomain() *schema.PromotionProduct {
+func (req *PromotionProductRequest) ToDomain(image string) *schema.PromotionProduct {
 	res := new(schema.PromotionProduct)
 
 	res.Product = schema.Product{
@@ -62,6 +62,7 @@ func (req *PromotionProductRequest) ToDomain() *schema.PromotionProduct {
 		},
 	}
 
+	res.Image = image
 	return res
 
 }

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"log"
 	"motionserver/app/database/schema"
 	"motionserver/app/module/product/request"
 	"motionserver/internal/bootstrap/database"
@@ -42,9 +43,11 @@ func (_i *productRepository) GetPromotionProduct(id uint64) (product *schema.Pro
 	return product, nil
 }
 func (_i *productRepository) GetPromotionProductByProduct(id uint64) (product *schema.PromotionProduct, err error) {
-	if err := _i.DB.DB.Where("ProductID = ?", id).Preload("Product").First(&product, id).Error; err != nil {
+	if err := _i.DB.DB.Where("promotion_products.product_id = ?", id).Preload("Product").First(&product).Error; err != nil {
+		log.Println("error", err)
 		return nil, err
 	}
+	log.Println("NO ERRO")
 	return product, nil
 }
 

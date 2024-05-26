@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"log"
 	"motionserver/app/module/product/repository"
 	"motionserver/app/module/product/request"
 	"motionserver/app/module/product/response"
@@ -23,10 +24,12 @@ func (_i *productService) CreatePromotion(req request.PromotionProductRequest) (
 		}
 	}
 	if oldProduct != nil {
-		ctx := context.Background()
-		err = _i.Minio.DeleteFile(ctx, oldProduct.Image)
-		if err != nil {
-			return
+		if len(oldProduct.Image) != 0 {
+			ctx := context.Background()
+			err = _i.Minio.DeleteFile(ctx, oldProduct.Image)
+			if err != nil {
+				return
+			}
 		}
 		err = _i.Repo.DeletePromotionProduct(uint64(oldProduct.ID))
 		if err != nil {
@@ -41,8 +44,9 @@ func (_i *productService) CreatePromotion(req request.PromotionProductRequest) (
 			return err
 		}
 		req.Image = *val
+		log.Println(req.Image)
 	}
-	return _i.Repo.CreatePromotionProduct(req.ToDomain())
+	return _i.Repo.CreatePromotionProduct(req.ToDomain(req.Image))
 }
 
 // DeletePromotion implements ProductService.
