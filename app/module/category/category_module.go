@@ -37,6 +37,7 @@ func (_i *CategoryRouter) RegisterCategoryRoutes() {
 		router.Get("", categoryController.Index)
 		router.Post("", middleware.ByRole(schema.Superadmin), categoryController.Store)
 		router.Put("/:id", middleware.ByRole(schema.Superadmin), categoryController.Store)
+		router.Delete("/:id", middleware.ByRole(schema.Superadmin), categoryController.Delete)
 	})
 	_i.App.Route("/youtube", func(router fiber.Router) {
 		router.Get("", categoryController.GetYoutube)
