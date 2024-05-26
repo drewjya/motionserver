@@ -80,8 +80,13 @@ func (_i *categoryService) All(req request.CategoriesRequest) (categories []*res
 	}
 	ctx := context.Background()
 	for _, v := range results {
-		image := _i.Minio.GenerateLink(ctx, v.Image)
-		categories = append(categories, response.FromDomain(v, image))
+		if len(v.Image) != 0 {
+
+			image := _i.Minio.GenerateLink(ctx, v.Image)
+			categories = append(categories, response.FromDomain(v, &image))
+		} else {
+			categories = append(categories, response.FromDomain(v, nil))
+		}
 	}
 	return
 
