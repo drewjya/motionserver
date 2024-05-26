@@ -73,6 +73,7 @@ func (_db *Database) ResetModels() {
 	); err != nil {
 		_db.Log.Error().Err(err).Msg("An unknown error occurred when to reset the database!")
 	}
+	_db.DB.Exec("drop table product_categories")
 }
 
 // list of models for migration

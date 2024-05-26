@@ -29,6 +29,7 @@ func (UserSeeder) Seed(conn *gorm.DB) error {
 			Account: schema.Account{
 				Name: "Andre",
 			},
+			Role: schema.Superadmin,
 		},
 		{
 			Email:          "william@email.com",
