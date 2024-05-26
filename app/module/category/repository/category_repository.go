@@ -13,6 +13,30 @@ type categoryRepository struct {
 	DB *database.Database
 }
 
+// FindOne implements CategoryRepository.
+func (_i *categoryRepository) FindOne(id uint) (category *schema.Category, err error) {
+	if err := _i.DB.DB.Model(&schema.Category{}).First(&category, id).Error; err != nil {
+		return nil, err
+	}
+	return category, nil
+}
+
+// Delete implements CategoryRepository.
+func (_i *categoryRepository) Delete(id uint) (err error) {
+	return _i.DB.DB.Unscoped().Delete(&schema.Category{}, id).Error
+}
+
+// Update implements CategoryRepository.
+func (_i *categoryRepository) Update(id uint, category *schema.Category) (err error) {
+	return _i.DB.DB.Model(&schema.Category{}).
+		Where(&schema.Category{
+			Model: gorm.Model{
+				ID: uint(id),
+			},
+		}).
+		Updates(category).Error
+}
+
 // DeleteYoutube implements CategoryRepository.
 func (_i *categoryRepository) DeleteYoutube() (err error) {
 	return _i.DB.DB.Exec("DELETE FROM youtubes").Error
@@ -21,6 +45,9 @@ func (_i *categoryRepository) DeleteYoutube() (err error) {
 type CategoryRepository interface {
 	GetCategories(req request.CategoriesRequest) (categories []*schema.Category, paging paginator.Pagination, err error)
 	Create(category *schema.Category) (err error)
+	FindOne(id uint) (category *schema.Category, err error)
+	Update(id uint, category *schema.Category) (err error)
+	Delete(id uint) (err error)
 	GetYoutube() (youtube *schema.Youtube, err error)
 	SetYoutube(youtube *schema.Youtube) (err error)
 	DeleteYoutube() (err error)

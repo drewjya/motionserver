@@ -1,6 +1,7 @@
 package category
 
 import (
+	"motionserver/app/database/schema"
 	"motionserver/app/middleware"
 	"motionserver/app/module/category/controller"
 	"motionserver/app/module/category/repository"
@@ -34,8 +35,8 @@ func (_i *CategoryRouter) RegisterCategoryRoutes() {
 	categoryController := _i.Controller.Cateogry
 	_i.App.Route("/category", func(router fiber.Router) {
 		router.Get("", categoryController.Index)
-
-		router.Post("", middleware.Protected(false), categoryController.Store)
+		router.Post("", middleware.ByRole(schema.Superadmin), categoryController.Store)
+		router.Put("/:id", middleware.ByRole(schema.Superadmin), categoryController.Store)
 	})
 	_i.App.Route("/youtube", func(router fiber.Router) {
 		router.Get("", categoryController.GetYoutube)

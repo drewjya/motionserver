@@ -18,6 +18,48 @@ type categoryService struct {
 	Minio *minio.Minio
 }
 
+// Delete implements CategoryService.
+func (_i *categoryService) Delete(id uint) (err error) {
+	category, err := _i.Repo.FindOne(id)
+	if err != nil {
+		return err
+	}
+	if len(category.Image) != 0 {
+		ctx := context.Background()
+		err = _i.Minio.DeleteFile(ctx, category.Image)
+		if err != nil {
+			return err
+		}
+	}
+	return _i.Repo.Delete(id)
+}
+
+// Update implements CategoryService.
+func (_i *categoryService) Update(req request.CategoryRequest, id uint) (err error) {
+	category, err := _i.Repo.FindOne(id)
+	if err != nil {
+		return err
+	}
+	if len(category.Image) != 0 {
+		ctx := context.Background()
+		err = _i.Minio.DeleteFile(ctx, category.Image)
+		if err != nil {
+			return err
+		}
+	}
+	if req.File != nil {
+		fmt.Println(req.File.Filename)
+		ctx := context.Background()
+		val, err := _i.Minio.UploadFile(ctx, *req.File)
+		if err != nil {
+			fmt.Println("ERROR IMAGE", err)
+			return err
+		}
+		req.Image = *val
+	}
+	return _i.Repo.Create(req.ToDomain())
+}
+
 // GetYoutube implements CategoryService.
 func (_i *categoryService) GetYoutube() (youtube *schema.Youtube, err error) {
 	return _i.Repo.GetYoutube()
@@ -64,6 +106,9 @@ func (_i *categoryService) SetYoutube() (err error) {
 type CategoryService interface {
 	All(req request.CategoriesRequest) (categories []*response.Categories, paging paginator.Pagination, err error)
 	Store(req request.CategoryRequest) (err error)
+
+	Update(req request.CategoryRequest, id uint) (err error)
+	Delete(id uint) (err error)
 	GetYoutube() (youtube *schema.Youtube, err error)
 	SetYoutube() (err error)
 }

@@ -3,6 +3,7 @@ package middleware
 import (
 	"fmt"
 	"log"
+	"motionserver/app/database/schema"
 	"motionserver/utils/config"
 	"motionserver/utils/response"
 	"strconv"
@@ -48,6 +49,54 @@ func Protected(refresh bool) fiber.Handler {
 					return c.Next()
 				}
 				if jwtc.Type == conf.Middleware.Jwt.RefreshKey && refresh {
+					return c.Next()
+				}
+
+				return c.Status(fiber.StatusUnauthorized).
+					JSON(response.Response{
+						Code:     fiber.StatusUnauthorized,
+						Data:     nil,
+						Messages: response.RootMessage("wrong_token_type"),
+						Meta:     nil,
+					})
+			}
+
+		},
+	})
+}
+
+func ByRole(role schema.Role) fiber.Handler {
+	conf := config.NewConfig()
+
+	if conf.Middleware.Jwt.Secret == "" {
+		panic("JWT secret is not set")
+	}
+
+	return jwtware.New(jwtware.Config{
+		SigningKey:   []byte(conf.Middleware.Jwt.Secret),
+		ErrorHandler: jwtError,
+		SuccessHandler: func(c *fiber.Ctx) error {
+			user := c.Locals("user").(*jwt.Token)
+			jwtc := new(JWTClaims)
+			_, err := jwt.ParseWithClaims(user.Raw, jwtc, func(t *jwt.Token) (interface{}, error) {
+				if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+				}
+				return []byte(conf.Middleware.Jwt.Secret), nil
+			})
+
+			if err != nil {
+				return c.Status(fiber.StatusUnauthorized).
+					JSON(response.Response{
+						Code:     fiber.StatusUnauthorized,
+						Data:     nil,
+						Messages: response.RootMessage("unauthorized"),
+						Meta:     nil,
+					})
+
+			} else {
+				c.Locals("token", jwtc)
+				if jwtc.Type == conf.Middleware.Jwt.AccessKey && role == schema.Role(jwtc.Roles) {
 					return c.Next()
 				}
 
