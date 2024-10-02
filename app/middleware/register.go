@@ -22,7 +22,7 @@ func (m *Middleware) Register() {
 	m.App.Use(logger.New())
 	m.App.Use(cors.New(cors.Config{
 		AllowHeaders:     "*",
-		AllowOrigins:     "*",
+		AllowOrigins:     "http://localhost:3000, http://localhost:3000, https://*.motionsportindonesia.id",
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
 	}))
