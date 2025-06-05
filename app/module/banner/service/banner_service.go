@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"log"
 	"motionserver/app/module/banner/repository"
 	"motionserver/app/module/banner/request"
 	"motionserver/app/module/banner/response"
@@ -50,6 +51,7 @@ func (_i *bannerService) Store(req request.BannerRequest) (err error) {
 
 		err = _i.Minio.DeleteFile(ctx, result.Image)
 		if err != nil {
+			log.Println("Error ", err.Error())
 			return
 		}
 	}
